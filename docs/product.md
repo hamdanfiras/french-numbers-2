@@ -90,6 +90,8 @@ Learners need a fast, repeatable listening exercise focused only on building thi
 ### Answer entry
 
 - Use one numeric answer field and the platform’s native numeric keyboard.
+- Focus the answer field and open the numeric keyboard as soon as each new number starts playing.
+- Keep the answer field enabled during playback so the user can begin typing immediately.
 - Keep a visible **Valider** button so submission does not depend on a keyboard action key.
 - Accept digits only.
 - Ignore leading zeros when checking an otherwise valid answer; for example, `072` is accepted as `72`.
@@ -169,7 +171,7 @@ This is a state of the practice screen, not a separate navigation destination.
 - Support platform text scaling without clipping essential controls or digits.
 - Maintain accessible color contrast.
 - Ensure the full flow is usable with VoiceOver and TalkBack.
-- Do not automatically focus the answer field until the spoken number finishes, so keyboard and screen-reader changes do not obscure the audio cue.
+- Automatically focus the answer field when playback begins so keyboard input is ready without an extra tap.
 
 ## Privacy and connectivity
 

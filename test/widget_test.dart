@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nombres_a_l_oreille/app.dart';
@@ -17,6 +19,21 @@ class FakeAudioPlayer implements NumberAudioPlayer {
   Future<void> dispose() async {}
 }
 
+class BlockingAudioPlayer implements NumberAudioPlayer {
+  final playback = Completer<void>();
+
+  @override
+  Future<void> play(int number) => playback.future;
+
+  @override
+  Future<void> stop() async {
+    if (!playback.isCompleted) playback.complete();
+  }
+
+  @override
+  Future<void> dispose() => stop();
+}
+
 class SequenceNumberSource implements NumberSource {
   SequenceNumberSource(this.values);
 
@@ -30,6 +47,29 @@ class SequenceNumberSource implements NumberSource {
 }
 
 void main() {
+  testWidgets('focuses the answer and opens the keyboard during playback', (
+    tester,
+  ) async {
+    final audio = BlockingAudioPlayer();
+    await tester.pumpWidget(
+      NombresApp(audioPlayer: audio, numberSource: SequenceNumberSource([72])),
+    );
+
+    await tester.tap(find.byKey(const Key('startButton')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    final answer = tester.widget<TextField>(
+      find.byKey(const Key('answerField')),
+    );
+    expect(answer.focusNode!.hasFocus, isTrue);
+    expect(answer.enabled, isNot(false));
+    expect(tester.testTextInput.isVisible, isTrue);
+
+    audio.playback.complete();
+    await tester.pumpAndSettle();
+  });
+
   testWidgets('shows the default range and validates bounds', (tester) async {
     await tester.pumpWidget(NombresApp(audioPlayer: FakeAudioPlayer()));
 

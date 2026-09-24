@@ -71,6 +71,7 @@ class _PracticeScreenState extends State<PracticeScreen> {
 
   Future<void> _playAndFocus() async {
     final request = ++_playRequest;
+    if (_phase == _PracticePhase.answering) _answerFocus.requestFocus();
     setState(() => _isPlaying = true);
     Object? playbackError;
     try {
@@ -88,7 +89,6 @@ class _PracticeScreenState extends State<PracticeScreen> {
       );
       return;
     }
-    if (_phase == _PracticePhase.answering) _answerFocus.requestFocus();
   }
 
   void _submit() {
@@ -105,7 +105,6 @@ class _PracticeScreenState extends State<PracticeScreen> {
 
   void _beginNextQuestion() {
     final previous = _currentNumber;
-    _answerFocus.unfocus();
     _answerController.clear();
     setState(() {
       _phase = _PracticePhase.answering;
@@ -225,7 +224,6 @@ class _AnsweringView extends StatelessWidget {
           key: const Key('answerField'),
           controller: controller,
           focusNode: focusNode,
-          enabled: !isPlaying,
           keyboardType: TextInputType.number,
           textInputAction: TextInputAction.done,
           inputFormatters: [
