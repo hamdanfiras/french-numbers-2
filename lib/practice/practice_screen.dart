@@ -140,7 +140,6 @@ class _PracticeScreenState extends State<PracticeScreen> {
                         key: const ValueKey('answering'),
                         controller: _answerController,
                         focusNode: _answerFocus,
-                        isPlaying: _isPlaying,
                         onReplay: _isPlaying ? null : _playAndFocus,
                         onSubmit: _answerController.text.isEmpty || _isPlaying
                             ? null
@@ -165,14 +164,12 @@ class _AnsweringView extends StatelessWidget {
     required super.key,
     required this.controller,
     required this.focusNode,
-    required this.isPlaying,
     required this.onReplay,
     required this.onSubmit,
   });
 
   final TextEditingController controller;
   final FocusNode focusNode;
-  final bool isPlaying;
   final VoidCallback? onReplay;
   final VoidCallback? onSubmit;
 
@@ -200,9 +197,8 @@ class _AnsweringView extends StatelessWidget {
         Center(
           child: Semantics(
             button: true,
-            label: isPlaying
-                ? 'Lecture en cours'
-                : 'Réécouter le nombre',
+            enabled: onReplay != null,
+            label: 'Réécouter le nombre',
             child: FilledButton.tonalIcon(
               key: const Key('replayButton'),
               onPressed: onReplay,
