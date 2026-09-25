@@ -192,9 +192,7 @@ class _AnsweringView extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          isPlaying
-              ? 'Lecture…'
-              : 'Vous pouvez le réécouter autant que nécessaire.',
+          'Vous pouvez le réécouter autant que nécessaire.',
           textAlign: TextAlign.center,
           style: textTheme.bodyLarge?.copyWith(color: colors.onSurfaceVariant),
         ),
@@ -203,18 +201,13 @@ class _AnsweringView extends StatelessWidget {
           child: Semantics(
             button: true,
             label: isPlaying
-                ? 'Lecture du nombre en cours'
+                ? 'Lecture en cours'
                 : 'Réécouter le nombre',
             child: FilledButton.tonalIcon(
               key: const Key('replayButton'),
               onPressed: onReplay,
-              icon: isPlaying
-                  ? const SizedBox.square(
-                      dimension: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2.5),
-                    )
-                  : const Icon(Icons.volume_up_rounded),
-              label: Text(isPlaying ? 'Lecture…' : 'Réécouter'),
+              icon: const Icon(Icons.volume_up_rounded),
+              label: const Text('Réécouter'),
               style: FilledButton.styleFrom(minimumSize: const Size(176, 54)),
             ),
           ),

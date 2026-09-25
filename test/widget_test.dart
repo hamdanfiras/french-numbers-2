@@ -65,6 +65,19 @@ void main() {
     expect(answer.focusNode!.hasFocus, isTrue);
     expect(answer.enabled, isNot(false));
     expect(tester.testTextInput.isVisible, isTrue);
+    expect(
+      find.text('Vous pouvez le réécouter autant que nécessaire.'),
+      findsOneWidget,
+    );
+    expect(find.text('Réécouter'), findsOneWidget);
+    expect(find.text('Lecture…'), findsNothing);
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+    expect(
+      tester
+          .widget<FilledButton>(find.byKey(const Key('replayButton')))
+          .onPressed,
+      isNull,
+    );
 
     audio.playback.complete();
     await tester.pumpAndSettle();
